@@ -9,5 +9,4 @@ router.get('auteur/:idAuteur', livreController.getAllLivreByAuteur);
 router.get('/auteur/livre/:idLivre', livreController.getAuteurOfLivre);
 router.get('/titre/:titre', livreController.getLivreParTitre);
 
-
 module.exports = router;
