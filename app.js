@@ -3,6 +3,7 @@ const app = express();
 const utilisateur = require('./routes/utilisateur.route');
 const connexion = require('./routes/connexion.route');
 const livre = require('./routes/livre.route');
+const commande = require('./routes/commande.route');
 
 
 
@@ -16,6 +17,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/utilisateur', utilisateur);
+app.use('/commande', commande);
 app.use('/livre', livre);
 app.use('/', connexion);
 app.get('/*', (req, res) => {

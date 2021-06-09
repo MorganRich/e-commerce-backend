@@ -25,9 +25,8 @@ exports.getOneById = (idLivre) => {
 
 exports.getAllByTitle = (titre) => {
     return new Promise ((resolve, rejetc) => {
-        let input = '%'.concat(titre.concat('%'));
-        const req = connection.query("SELECT * FROM livre where titre= ?", input, (err, result) => {
-            console.log(req.sql)
+       let input = '%'.concat(titre.concat('%'));
+        const req = connection.query("SELECT * FROM livre where titre like ?", input, (err, result) => {
             err || result.affectedRows == 0 ? reject(err) : resolve(result);
         });
     });
