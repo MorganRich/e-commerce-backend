@@ -16,12 +16,14 @@ exports.getAll = async (req, res, next) => {
         })
     });
     for (let u of users) {
+       
         u.adresses = await personneAdresseDao.getAllAdressesOfPersonne(u.idUtilisateur)
             .catch(err => {
                 res.status(500).json({
                     error: `problème de récupération d'adresses : ${err}`
                 });
             });
+            
             for ( let a of u.adresses) {
                
                 a.typeAdresse = await personneAdresseDao.getTypeOfAdresseOfUtilisateur(u.idUtilisateur, a.idAdresse)
@@ -96,6 +98,8 @@ exports.edit = async (req, res, next) => {
         req.body.etatCompte,
         req.body.adresses
     );   
+
+    
     await utilisateurDao.edit(id, p)
         .then(async (result) => {
             console.log(p)

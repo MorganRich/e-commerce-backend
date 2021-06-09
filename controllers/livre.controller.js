@@ -74,3 +74,18 @@ exports.getAuteurOfLivre = async (req, res, next) => {
 
     res.status(200).json(auteurs[0]);
 }
+
+exports.getLivreParTitre = async (req, res, next) => {
+    const titre = req.params.titre;
+    console.log(titre)
+   let livre = await livreDao.getAllByTitle (titre)
+    .catch (err => {
+        return res.status(500).json({
+            error : 'erreur dans la recherche de livre '
+        })
+    })
+
+    res.status(200).json(livre);
+
+
+}
