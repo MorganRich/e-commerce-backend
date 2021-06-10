@@ -68,6 +68,7 @@ exports.add = async (req, res, next) => {
         req.body.motDePasse,
 
     );
+   
     p.motDePasse = await argon2.hash(req.body.motDePasse)
         .catch(err => {
             return res.status(500).json({
