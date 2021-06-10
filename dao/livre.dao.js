@@ -21,7 +21,7 @@ exports.getOneById = (idLivre) => {
 };
 
 exports.getAllByTitle = (titre) => {
-    return new Promise((resolve, rejetc) => {
+    return new Promise((resolve, reject) => {
         let input = '%'.concat(titre.concat('%'));
         const req = connection.query("SELECT l.idLivre, l.titre, l.image, g.type, au.nom, au.prenom, ar.prixUnitaire, ar.quantiteEnStock FROM livre l JOIN genre g ON l.idGenre = g.idGenre JOIN article ar ON l.reference_article = ar.reference_article JOIN livre_auteur la ON l.idLivre = la.idLivre JOIN auteur au ON la.idAuteur = au.idAuteur WHERE l.titre LIKE ?", input, (err, result) => {
             err || result.affectedRows == 0 ? reject(err) : resolve(result);
