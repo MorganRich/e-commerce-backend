@@ -19,7 +19,7 @@ app.use((req, res, next) => {
 app.use('/utilisateur', utilisateur);
 app.use('/commande', commande);
 app.use('/livre', livre);
-app.use('/', connexion);
+app.use('/connexion', connexion);
 app.get('/*', (req, res) => {
     res
         .status(404)

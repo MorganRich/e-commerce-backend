@@ -3,7 +3,7 @@ const router = express.Router();
 const connexionController = require('../controllers/connexion.controller');
 
 
-router.post('/connexion', connexionController.connexion);
+router.post('/', connexionController.connexion);
 
 
 module.exports = router;
