@@ -14,12 +14,14 @@ exports.commander = async (req, res, next) => {
 
     const c = new commande.Commande(
         req.body.numCommande,
-        req.body.idUtilisateur,
         req.body.dateCommande,
+        req.body.idUtilisateur,
+        req.body.prixTotalCommande,
         req.body.lignesCommande,
         req.body.numFacture, 
+       
     );
-    console.log(req.body)
+    console.log(c.idUtilisateur)
 
     let com = await commandeDao.add(c)
     .catch(err => {
@@ -32,6 +34,7 @@ exports.commander = async (req, res, next) => {
     c.numCommande = com.insertId;
    
     for ( let lc of c.lignesCommande) {  
+        
         let prixArticle = await articleDao.getPrixByReference(lc.referenceArticle)
         .catch(err => {
             return res.status(500).json({

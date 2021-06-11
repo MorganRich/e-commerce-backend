@@ -9,7 +9,7 @@ const livreAuteurDao = require("../dao/livreAuteur.dao");
 exports.getAll = (req, res, next) => {
     let livres = livreDao.getAll()
         .then((result) => {
-            res.status(200).json(result[0])
+            res.status(200).json(result)
         }).catch(err => {
             return res.status(500).json({
                 error: `problème de récupération des livres: ${err}`
@@ -84,7 +84,7 @@ exports.getLivreParTitre = async (req, res, next) => {
             error : 'erreur dans la recherche de livre '
         })
     })
-
+    console.log(livre)
     res.status(200).json(livre);
 
 

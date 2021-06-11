@@ -13,7 +13,7 @@ exports.getAllByUserId = (idUtilisateur) => {
 
 exports.add = (c) => {
     return new Promise((resolve, reject) => {
-        const req = connection.query("INSERT INTO commande SET dateCommande = (CURDATE()), idUtilisateur = ?", [ c.idUtilisateur], (err, result) => {
+        const req = connection.query("INSERT INTO commande SET dateCommande = (CURDATE()), idUtilisateur = ?, prixTotalCommande =?", [ c.idUtilisateur, c.prixTotalCommande], (err, result) => {
             console.log(req.sql)
             err ? reject(err) : resolve(result);
             
