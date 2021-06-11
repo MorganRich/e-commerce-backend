@@ -49,7 +49,14 @@ exports.add = (idUtilisateur, idAdresse) => {
     })
 }
 
-
+exports.addOneAdresseOfPersonne = (idPersonne, idAdresse, idType) => {
+    return new Promise((resolve, reject) => {
+        const req = connection.query("INSERT INTO utilisateur_adresse SET idUtilisateur = ?, idAdresse = ?, idType = ?", [idPersonne, idAdresse, idType], (err, result) => {
+            console.log(req.sql)
+            err ? reject(err) : resolve(result);
+        });
+    });
+};
 
 exports.edit = (idAdresse, idPa) => {
     return new Promise ((resolve, reject) => {
