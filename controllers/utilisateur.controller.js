@@ -68,7 +68,7 @@ exports.add = async (req, res, next) => {
         req.body.adresses,
         req.body.etatCompte
     );
-   
+
     p.motDePasse = await argon2.hash(req.body.motDePasse)
         .catch(err => {
             return res.status(500).json({
@@ -101,7 +101,6 @@ exports.add = async (req, res, next) => {
     return res.status(201).json(p);
 }
 
-
 exports.edit = async (req, res, next) => {
     const id = parseInt(req.params.id);
     const p = new utilisateur.Utilisateur(
@@ -110,11 +109,9 @@ exports.edit = async (req, res, next) => {
         req.body.prenom,
         req.body.email,
         req.body.motDePasse,
-        req.body.etatCompte,
         req.body.adresses
     );
-
-
+    console.log(req.body);
     await utilisateurDao.edit(id, p)
         .then(async (result) => {
             console.log(p)
@@ -134,12 +131,10 @@ exports.edit = async (req, res, next) => {
                     adresse.idAdresse = res.insertId;
                 }
                 await personneAdresseDao.add(p.idUtilisateur, adresse.idAdresse).catch(err => {
-
                     return res.status(500).json({
                         error: `problème d'insertion dans  personne_adresse : ${err}`
                     });
                 });
-
             }
             return res.status(202).json(p);
         })
@@ -195,9 +190,9 @@ exports.getAdresseByIdPersonne = async (req, res, next) => {
 
 exports.getBillingAdresseOfPersonneByType = async (req, res, next) => {
     const idUtilisateur = parseInt(req.params.idUtilisateur);
-    console.log(typeof(idUtilisateur))
-    personneAdresseDao.getBillingAdresseOfPersonneByType(idUtilisateur) 
-    .then(result => res.status(200).json(result[0]))
+    console.log(typeof (idUtilisateur))
+    personneAdresseDao.getBillingAdresseOfPersonneByType(idUtilisateur)
+        .then(result => res.status(200).json(result[0]))
         .catch(err => {
             res.status(500).json({
                 error: `adresse de facturation introuvable : ${err}`
