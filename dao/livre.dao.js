@@ -2,7 +2,7 @@ const connection = require('../database.js');
 
 exports.getAll = () => {
     return new Promise((resolve, reject) => {
-        const req = connection.query("SELECT * FROM livre l JOIN article a ON a.reference_article = l.reference_article WHERE a.quantiteEnStock > 0 ORDER BY a.nombreDeconsultation DESC", (err, result) => {
+        const req = connection.query("SELECT * FROM livre l JOIN article a ON a.reference_article = l.reference_article JOIN livre_auteur la ON la.idLivre = l.idLivre JOIN auteur au ON au.idAuteur = la.idAuteur JOIN genre g ON g.idGenre = l.idGenre WHERE a.quantiteEnStock > 0 ORDER BY a.nombreDeconsultation DESC", (err, result) => {
             console.log(req.sql)
             err ? reject(err) : resolve(result);
         });
