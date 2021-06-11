@@ -7,6 +7,7 @@ router.get('/:id', utilisateurController.getOneById);
 router.get('/:idUtilisateur/adresses', utilisateurController.getAdressesByIdPersonne);
 router.get('/:idUtilisateur/adresses/:idAdresse', utilisateurController.getAdresseByIdPersonne);
 router.get('/commande/adresse/:idUtilisateur', utilisateurController.getBillingAdresseOfPersonneByType);
+router.get('/commande/:idUtilisateur', utilisateurController.getCommandesByIdPersonne);
 router.post('/', utilisateurController.add);
 router.put('/:id', utilisateurController.edit);
 router.put('/:idUtilisateur/adresses/:idAdresse', utilisateurController.editAdresseType);

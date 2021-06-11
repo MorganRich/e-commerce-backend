@@ -4,6 +4,7 @@ const utilisateur = require("../models/utilisateur");
 const typeAdresse = require("../models/typeAdresse");
 const utilisateurDao = require("../dao/utilisateur.dao");
 const adresseDao = require("../dao/adresse.dao");
+const commandeDao = require("../dao/commande.dao");
 const typeAdresseDao = require("../dao/typeAdresse.dao");
 const personneAdresseDao = require('../dao/personneAdresse.dao');
 
@@ -162,8 +163,27 @@ exports.editAdresseType = (req, res, next) => {
         });
 }
 
-
-
+exports.getCommandesByIdPersonne = async (req, res, next) => {
+    const id = parseInt(req.params.idUtilisateur);
+    let commandes = await commandeDao.getAllByUserId(id)
+        .catch(err => {
+            res.status(500).json({
+                error: `problème de récupération des commandes : ${err}`
+            });
+        });
+    console.log(commandes);
+    for (let commande of commandes) {
+        console.log(commandes.numCommande);
+        commande.lignesCommande = await commandeDao.getAllLignesCommandeByUserId(commande.numCommande)
+            .catch(err => {
+                res.status(500).json({
+                    error: `problème de récupération des lignes des commandes : ${err}`
+                });
+            });
+    }
+    console.log(commandes);
+    return res.status(201).json(commandes);;
+}
 
 exports.getAdressesByIdPersonne = (req, res, next) => {
     const id = parseInt(req.params.idUtilisateur);
