@@ -20,6 +20,17 @@ exports.getOneAdresseOfPersonne =(idUtilisateur, idAdresse) => {
 
 }
 
+exports.getBillingAdresseOfPersonneByType =(idUtilisateur) => {
+    return new Promise((resolve, reject ) => {
+        const req = connection.query("SELECT a.idAdresse, typeDeVoie, numRue, codePostal, ville, complement FROM adresse a join utilisateur_adresse pa ON pa.idAdresse = a.idAdresse WHERE idUtilisateur =? and idType =2",idUtilisateur,(err, result) => {
+            console.log(req.sql)
+           
+            err ? reject(err) : resolve(result);
+        });
+    });
+
+}
+
 exports.getTypeOfAdresseOfUtilisateur =(idUtilisateur, idAdresse) => {
     return new Promise((resolve, reject ) => {
         const req = connection.query("SELECT t.nom FROM type_adresse t join utilisateur_adresse ua ON ua.idType = t.idType WHERE idUtilisateur = ? and idAdresse =?", [idUtilisateur, idAdresse],(err, result) => {
