@@ -6,6 +6,7 @@ const utilisateurDao = require("../dao/utilisateur.dao");
 const adresseDao = require("../dao/adresse.dao");
 const typeAdresseDao = require("../dao/typeAdresse.dao");
 const personneAdresseDao = require('../dao/personneAdresse.dao');
+const adresse = require('../models/adresse');
 
 
 
@@ -178,15 +179,34 @@ exports.getAdresseByIdPersonne = async (req, res, next) => {
         });
 }
 
-exports.getBillingAdresseOfPersonneByType = async (req, res, next) => {
+exports.getAdresseOfPersonneByType = async (req, res, next) => {
     const idUtilisateur = parseInt(req.params.idUtilisateur);
-    console.log(typeof(idUtilisateur))
-    personneAdresseDao.getBillingAdresseOfPersonneByType(idUtilisateur) 
+    const idType = parseInt(req.params.idType);
+    
+    personneAdresseDao.getAdresseOfPersonneByType(idUtilisateur, idType) 
     .then(result => res.status(200).json(result[0]))
         .catch(err => {
             res.status(500).json({
-                error: `adresse de facturation introuvable : ${err}`
+                error: `adresse introuvable : ${err}`
             });
         });
+}
+
+exports.addAdresse = async (req, res, next) => {
+    console.log("adresse controller")
+    const a = new adresse.Adresse(
+         req.body.idType
+    );
+   console.log(req.body.idType)
+    const idUtilisateur = parseInt(req.params.idUtilisateur);
+    const idAdresse = parseInt(req.params.idAdresse);
+    personneAdresseDao.addAdresse(idUtilisateur, idAdresse, 2) 
+        .then (result => res.status(200).json(result))
+        .catch(err => {
+            res.status(500).json({
+                error : `Problème ajout d'adresse : ${err}`
+            });
+        });
+    
 }
 

@@ -2,7 +2,7 @@ const connection = require('../database.js');
 
 exports.getAllAdressesOfPersonne = (idUtilisateur) => {
     return new Promise((resolve, reject) => {
-        const req = connection.query("SELECT a.idAdresse, typeDeVoie, numRue, codePostal, ville, complement FROM adresse a JOIN utilisateur_adresse pa ON pa.idAdresse = a.idAdresse  WHERE idUtilisateur = ? ", idUtilisateur, (err, result) => {
+        const req = connection.query("SELECT a.idAdresse, typeDeVoie, numRue, codePostal, ville, complement, idType FROM adresse a JOIN utilisateur_adresse pa ON pa.idAdresse = a.idAdresse  WHERE idUtilisateur = ? ", idUtilisateur, (err, result) => {
             console.log(req.sql)
             err  ? reject(err) : resolve(result);
         });
@@ -20,9 +20,10 @@ exports.getOneAdresseOfPersonne =(idUtilisateur, idAdresse) => {
 
 }
 
-exports.getBillingAdresseOfPersonneByType =(idUtilisateur) => {
+exports.getAdresseOfPersonneByType =(idUtilisateur, idType) => {
+    console.log(idType + "" + "dao")
     return new Promise((resolve, reject ) => {
-        const req = connection.query("SELECT a.idAdresse, typeDeVoie, numRue, codePostal, ville, complement FROM adresse a join utilisateur_adresse pa ON pa.idAdresse = a.idAdresse WHERE idUtilisateur =? and idType =2",idUtilisateur,(err, result) => {
+        const req = connection.query("SELECT a.idAdresse, typeDeVoie, numRue, codePostal, ville, complement FROM adresse a join utilisateur_adresse pa ON pa.idAdresse = a.idAdresse WHERE idUtilisateur =? and idType = ?",[idUtilisateur, idType],(err, result) => {
             console.log(req.sql)
            
             err ? reject(err) : resolve(result);
@@ -40,13 +41,14 @@ exports.getTypeOfAdresseOfUtilisateur =(idUtilisateur, idAdresse) => {
     });
 }
 
-exports.add = (idUtilisateur, idAdresse) => {
+exports.addAdresse =(idUtilisateur, idAdresse, idType) => {
+   console.log(idType)
     return new Promise((resolve, reject) => {
-        const req = connection.query("INSERT INTO utilisateur_adresse (idUtilisateur, idAdresse) VALUES (?, ?)", [idUtilisateur, idAdresse], (err, result) => {
+        const req = connection.query("INSERT INTO utilisateur_adresse (idUtilisateur, idAdresse, idType) VALUES (?, ?, ?)", [idUtilisateur, idAdresse, idType], (err, result) => {
             console.log(req.sql)
             err ? reject(err) : resolve(result);
-        })
-    })
+        });
+    });
 }
 
 
