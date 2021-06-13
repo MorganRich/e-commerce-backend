@@ -31,3 +31,14 @@ exports.getPrixByReference = (referenceArticle) => {
 };
 
 
+exports.getQuantiteById = (referenceArticle) => {
+    return new Promise((resolve, reject) => {
+        const req = connection.query("SELECT quantiteEnStock FROM article where reference_article= ?", referenceArticle,(err, result) => {
+            console.log(req.sql)
+            err  ? reject(err) : resolve(result);
+        });
+    });
+
+}
+
+

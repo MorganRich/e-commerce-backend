@@ -4,6 +4,7 @@ const articleController= require('../controllers/article.controller');
 
 router.get('/', articleController.getAll);
 router.get('/:referenceArticle', articleController.getOneByReference);
+router.get('/stock/:referenceArticle', articleController.getQuantiteById);
 
 
 
