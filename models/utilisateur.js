@@ -8,5 +8,4 @@ exports.Utilisateur = class {
         this.adresses = adresses;
         this.etatCompte = etatCompte;
     }
-
 }
