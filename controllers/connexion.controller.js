@@ -14,6 +14,7 @@ exports.connexion = async (req, res, next) => {
         });
 
     let u = user[0];
+    console.log(user)
     await argon2.verify(u.motDePasse, req.body.motDePasse)
         .then((success) => {
             if (success) {
