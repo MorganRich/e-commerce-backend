@@ -18,11 +18,10 @@ exports.getOneAdresseOfPersonne = (idUtilisateur, idAdresse) => {
     });
 }
 
-
-exports.getAdresseOfPersonneByType =(idUtilisateur, idType) => {
+exports.getAdresseOfPersonneByType = (idUtilisateur, idType) => {
     console.log(idType + "" + "dao")
-    return new Promise((resolve, reject ) => {
-        const req = connection.query("SELECT a.idAdresse, typeDeVoie, numRue, codePostal, ville, complement FROM adresse a join utilisateur_adresse pa ON pa.idAdresse = a.idAdresse WHERE idUtilisateur =? and idType = ?",[idUtilisateur, idType],(err, result) => {
+    return new Promise((resolve, reject) => {
+        const req = connection.query("SELECT a.idAdresse, typeDeVoie, numRue, codePostal, ville, complement FROM adresse a join utilisateur_adresse pa ON pa.idAdresse = a.idAdresse WHERE idUtilisateur =? and idType = ?", [idUtilisateur, idType], (err, result) => {
 
             console.log(req.sql)
             err ? reject(err) : resolve(result);
@@ -39,8 +38,8 @@ exports.getTypeOfAdresseOfUtilisateur = (idUtilisateur, idAdresse) => {
     });
 }
 
-exports.addAdresse =(idUtilisateur, idAdresse, idType) => {
-   console.log(idType)
+exports.addAdresse = (idUtilisateur, idAdresse, idType) => {
+    console.log(idType)
     return new Promise((resolve, reject) => {
         const req = connection.query("INSERT INTO utilisateur_adresse (idUtilisateur, idAdresse, idType) VALUES (?, ?, ?)", [idUtilisateur, idAdresse, idType], (err, result) => {
             console.log(req.sql)

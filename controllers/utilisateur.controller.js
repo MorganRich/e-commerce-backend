@@ -59,7 +59,6 @@ exports.getOneById = async (req, res, next) => {
 
 }
 
-
 exports.add = async (req, res, next) => {
     const p = new utilisateur.Utilisateur(
         req.body.idUtilisateur,
@@ -70,7 +69,6 @@ exports.add = async (req, res, next) => {
         req.body.adresses,
         req.body.etatCompte
     );
-
     p.motDePasse = await argon2.hash(req.body.motDePasse)
         .catch(err => {
             return res.status(500).json({
@@ -123,6 +121,7 @@ exports.edit = async (req, res, next) => {
                         error: `problème de suppression d'adresse : ${err}`
                     });
                 });
+            let i = 1;
             for (let adresse of p.adresses) {
                 if (!adresse.idAdresse) {
                     let res = await adresseDao.add(adresse).catch(err => {
@@ -131,12 +130,13 @@ exports.edit = async (req, res, next) => {
                         });
                     });
                     adresse.idAdresse = res.insertId;
-                }
-                await personneAdresseDao.add(p.idUtilisateur, adresse.idAdresse).catch(err => {
+                }   
+                await personneAdresseDao.addOneAdresseOfPersonne(p.idUtilisateur, adresse.idAdresse, i).catch((err) => {
                     return res.status(500).json({
-                        error: `problème d'insertion dans  personne_adresse : ${err}`
+                        error: `problème d'insertion dans personne_adresse : ${err}`
                     });
-                });
+                })
+                i++;
             }
             return res.status(202).json(p);
         })
@@ -213,9 +213,9 @@ exports.getAdresseOfPersonneByType = async (req, res, next) => {
     const idUtilisateur = parseInt(req.params.idUtilisateur);
 
     const idType = parseInt(req.params.idType);
-    
-    personneAdresseDao.getAdresseOfPersonneByType(idUtilisateur, idType) 
-    .then(result => res.status(200).json(result[0]))
+
+    personneAdresseDao.getAdresseOfPersonneByType(idUtilisateur, idType)
+        .then(result => res.status(200).json(result[0]))
 
         .catch(err => {
             res.status(500).json({
@@ -227,18 +227,18 @@ exports.getAdresseOfPersonneByType = async (req, res, next) => {
 exports.addAdresse = async (req, res, next) => {
     console.log("adresse controller")
     const a = new adresse.Adresse(
-         req.body.idType
+        req.body.idType
     );
-   console.log(req.body.idType)
+    console.log(req.body.idType)
     const idUtilisateur = parseInt(req.params.idUtilisateur);
     const idAdresse = parseInt(req.params.idAdresse);
-    personneAdresseDao.addAdresse(idUtilisateur, idAdresse, 2) 
-        .then (result => res.status(200).json(result))
+    personneAdresseDao.addAdresse(idUtilisateur, idAdresse, 2)
+        .then(result => res.status(200).json(result))
         .catch(err => {
             res.status(500).json({
-                error : `Problème ajout d'adresse : ${err}`
+                error: `Problème ajout d'adresse : ${err}`
             });
         });
-    
+
 }
 
