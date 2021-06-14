@@ -8,10 +8,7 @@ const ligneCommande = require("../models/ligneCommande");
 const ligneProduitCommandeDao = require('../dao/ligneProduitCommande.dao');
 const articleDao = require('../dao/article.dao');
 
-
-
 exports.commander = async (req, res, next) => {
-
     const c = new commande.Commande(
         req.body.numCommande,
         req.body.dateCommande,
@@ -19,23 +16,21 @@ exports.commander = async (req, res, next) => {
         req.body.prixTotalCommande,
         req.body.lignesCommande,
         req.body.numFacture, 
-       
     );
-    console.log(c.idUtilisateur)
-
+    for(let i = 0; i <  req.body.lignesCommande.length; i++) {
+        c.lignesCommande[i].livre = req.body.lignesCommande[i].livre;
+        console.log(c.lignesCommande[i].livre);
+    }
     let com = await commandeDao.add(c)
     .catch(err => {
         return res.status(500).json({
             error :`Problème de validation de la commande ${err}`
         });
-        
     });
-    
     c.numCommande = com.insertId;
-   
+    console.log(c);
     for ( let lc of c.lignesCommande) {  
-        
-        let prixArticle = await articleDao.getPrixByReference(lc.referenceArticle)
+        let prixArticle = await articleDao.getPrixByReference(lc.livre.reference_article)
         .catch(err => {
             return res.status(500).json({
                 error :`Problème d'ajout de ligne commande  `
@@ -48,8 +43,6 @@ exports.commander = async (req, res, next) => {
             });
         });
         lc.id = resultat.insertId;
-    
-    
         await ligneProduitCommandeDao.add(lc.id, c.numCommande)
         .catch(err => {
             return res.status(500).json({
@@ -57,8 +50,5 @@ exports.commander = async (req, res, next) => {
             });
         });
     }
-    
-   
   return res.status(200).json(c);
-    
 }

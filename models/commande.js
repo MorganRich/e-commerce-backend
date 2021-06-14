@@ -1,5 +1,5 @@
 exports.Commande = class {
-    constructor(numCommande,dateCommande,idUtilisateur, prixTotalCommande, lignesCommande, totalCommande, numFacture) {
+    constructor(numCommande, dateCommande, idUtilisateur, prixTotalCommande, lignesCommande, totalCommande, numFacture) {
         this.numCommande = numCommande;
         this.dateCommande = dateCommande;
         this.idUtilisateur = idUtilisateur;
@@ -7,5 +7,4 @@ exports.Commande = class {
         this.lignesCommande = lignesCommande;
         this.numFacture = numCommande;
     }
-
 }
